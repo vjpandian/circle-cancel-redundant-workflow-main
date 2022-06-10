@@ -1,7 +1,7 @@
 echo -e "The current commit is $CIRCLE_SHA1\n"
 CIRCLE_SHA1="$CIRCLE_SHA1"
 echo -e "Getting pipeline ids for $CIRCLE_SHA1 and writing it to pipelines.json\n\n\n"
-curl https://circleci.com/api/v2/project/github/vjpandian/solid-goggles/pipeline?branch=main -H "Circle-Token: $CIRCLE_TOKEN" | jq -r '.items[]|select(.vcs.revision == env.CIRCLE_SHA1).id' > pipelines.json
+curl https://circleci.com/api/v2/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline?branch=main -H "Circle-Token: $CIRCLE_TOKEN" | jq -r '.items[]|select(.vcs.revision == env.CIRCLE_SHA1).id' > pipelines.json
 echo -e "EOF\n\n"
 pipeline_count=$(wc -l < pipelines.json)
 echo -e "There are ${pipeline_count} pipeline(s) found so far\n"
