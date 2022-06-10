@@ -8,8 +8,7 @@ jobs:
         - run: 
             name: Cancel if workflow has run already for this commit
             command: |
-                echo "hello"
-                #bash cancel-workflow.sh
+                bash cancel-workflow.sh
 workflows:
   main:
     jobs:
