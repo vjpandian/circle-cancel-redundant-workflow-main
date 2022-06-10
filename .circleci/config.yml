@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  test-job:
+      docker:
+        - image: cimg/base:stable
+      steps:
+        - checkout
+        - run: 
+            name: Cancel if workflow has run already for this commit
+            command: bash cancel-workflow.sh
+workflows:
+  main:
+    jobs:
+      - test-job
