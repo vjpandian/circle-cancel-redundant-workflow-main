@@ -17,7 +17,7 @@ then
     exit 1
 else
      echo -e "Found only one pipeline for this commit..will not cancel since the metadata will match the current workflow...\n\n"
-     pipeline_id=$(curl https://circleci.com/api/v2/project/github/vjpandian/solid-goggles/pipeline?branch=main -H "Circle-Token: $CIRCLE_TOKEN" | jq -r '.items[]|select(.vcs.revision == env.CIRCLE_SHA1).id')
+     pipeline_id=$(curl https://circleci.com/api/v2/project/github/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/pipeline?branch=main -H "Circle-Token: $CIRCLE_TOKEN" | jq -r '.items[]|select(.vcs.revision == env.CIRCLE_SHA1).id')
      echo $pipeline_id
      echo -e "\n\nReturning pipeline metadata for the one pipeline found...it should match the current pipeline and workflow\n\n"
      curl https://circleci.com/api/v2/pipeline/$pipeline_id -H "Circle-Token: $CIRCLE_TOKEN"
