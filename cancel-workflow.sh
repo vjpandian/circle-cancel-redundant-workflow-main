@@ -13,6 +13,8 @@ then
     echo "-----"
     echo -e "Since a pipeline has already run for this $CIRCLE_SHA1, cancelling current workflow\n\n"
     curl --request POST --url https://circleci.com/api/v2/workflow/$CIRCLE_WORKFLOW_ID/cancel -H "Circle-Token: $CIRCLE_TOKEN" 
+    sleep 5
+    exit 1
 else
      echo -e "Found only one pipeline for this commit..will not cancel since the metadata will match the current workflow...\n\n"
      pipeline_id=$(curl https://circleci.com/api/v2/project/github/vjpandian/solid-goggles/pipeline?branch=main -H "Circle-Token: $CIRCLE_TOKEN" | jq -r '.items[]|select(.vcs.revision == env.CIRCLE_SHA1).id')
