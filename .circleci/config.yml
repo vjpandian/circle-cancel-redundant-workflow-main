@@ -31,9 +31,9 @@ jobs:
         - image: cimg/base:stable
       resource_class: small
       steps:
+        - checkout
         - cancel-if-new-commit
         - cancel-if-redundant-workflow
-        - checkout
         - run: sleep 300
 
 workflows:
