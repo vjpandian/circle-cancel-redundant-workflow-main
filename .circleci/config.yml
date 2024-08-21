@@ -9,7 +9,8 @@ commands:
             background: true
             command: |
                 bash cancel-workflow.sh
-                
+  
+  # https://support.circleci.com/hc/en-us/articles/360058421851-Auto-cancel-workflow-via-run-step             
   cancel-if-new-commit:
     steps:
       - run:
@@ -32,7 +33,6 @@ jobs:
       resource_class: small
       steps:
         - checkout
-        - cancel-if-new-commit
         - cancel-if-redundant-workflow
         - run: sleep 300
 
