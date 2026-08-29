@@ -1,24 +1,21 @@
 version: 2.1
 
-commands:
-
-  cancel-if-redundant-workflow:
-    steps:
-        - run: 
-            name: Cancel if workflow has run already for this commit
-            background: true
-            command: |
-                bash cancel-workflow.sh
-
 jobs:
   test-redundant-cancellation:
-      docker:
-        - image: cimg/base:stable
-      resource_class: small
-      steps:
-        - checkout
-        - cancel-if-redundant-workflow
-        - run: sleep 300
+    docker:
+      - image: cimg/base:stable
+    resource_class: small
+    steps:
+      - checkout
+      - run:
+          name: Install CircleCI CLI
+          command: curl -fsSL https://raw.githubusercontent.com/CircleCI-Public/circleci-cli/main/install.sh | sudo bash
+      - run:
+          name: Cancel redundant workflows
+          command: bash cancel-workflow.sh
+      - run:
+          name: Keep workflow running so overlap can be tested
+          command: sleep 300
 
 workflows:
   main:
