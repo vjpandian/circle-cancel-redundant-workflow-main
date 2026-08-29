@@ -1,5 +1,5 @@
 # circle-cancel-redundant-workflow-main
 
-Cancel older in-progress workflows on the same branch. The current workflow is left running.
+When a newer run starts on the same branch, this workflow cancels itself.
 
-Uses the CircleCI CLI (`circleci workflow list` and `circleci workflow cancel`).
+Uses the CircleCI CLI (`circleci run list` and `circleci workflow cancel`) in a background loop.

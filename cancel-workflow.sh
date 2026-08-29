@@ -1,18 +1,22 @@
 #!/bin/sh
-# Cancel other in-progress workflows on this branch. Do not cancel the current one.
+# Cancel this workflow if a newer run appears on the same branch.
 set -eu
 
-ids=$(circleci workflow list \
-  --project "gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" \
-  --branch "$CIRCLE_BRANCH" \
-  --json --jq '.[] | select(.id != env.CIRCLE_WORKFLOW_ID and .phase != "ended") | .id')
+project="gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}"
 
-if [ -z "$ids" ]; then
-  echo "No redundant workflows to cancel"
-  exit 0
-fi
+while true; do
+  newest=$(circleci run list \
+    --project "$project" \
+    --branch "$CIRCLE_BRANCH" \
+    --limit 5 \
+    --json --jq '.[0].id')
 
-for id in $ids; do
-  echo "Cancelling redundant workflow $id"
-  circleci workflow cancel "$id" --force
+  if [ "$newest" != "$CIRCLE_PIPELINE_ID" ]; then
+    echo "Newer run $newest found; cancelling this workflow $CIRCLE_WORKFLOW_ID"
+    circleci workflow cancel "$CIRCLE_WORKFLOW_ID" --force
+    exit 0
+  fi
+
+  echo "This run is newest; checking again shortly"
+  sleep 8
 done
