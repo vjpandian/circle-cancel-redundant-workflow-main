@@ -1,5 +1,6 @@
 #!/bin/sh
 # Cancel other in-progress workflows on this branch. Do not cancel the current one.
+set -eu
 
 ids=$(circleci workflow list \
   --project "gh/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}" \
@@ -11,7 +12,7 @@ if [ -z "$ids" ]; then
   exit 0
 fi
 
-echo "$ids" | while IFS= read -r id; do
+for id in $ids; do
   echo "Cancelling redundant workflow $id"
   circleci workflow cancel "$id" --force
 done
