@@ -1,20 +1,18 @@
 version: 2.1
 
 commands:
-
   cancel-if-redundant-workflow:
     steps:
         - run: 
             name: Cancel if workflow has run already for this commit
             background: true
-            command: |
-                bash cancel-workflow.sh
+            command: bash cancel-workflow.sh
 
 jobs:
   test-redundant-cancellation:
       docker:
         - image: cimg/base:stable
-      resource_class: small
+      resource_class: small.gen2
       steps:
         - checkout
         - cancel-if-redundant-workflow
