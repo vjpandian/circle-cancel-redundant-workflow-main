@@ -4,7 +4,7 @@ jobs:
   test-redundant-cancellation:
     docker:
       - image: cimg/base:stable
-    resource_class: small
+    resource_class: small.gen2
     steps:
       - checkout
       - run:
@@ -13,6 +13,7 @@ jobs:
       - run:
           name: Cancel redundant workflows
           command: bash cancel-workflow.sh
+          background: true
       - run:
           name: Keep workflow running so overlap can be tested
           command: sleep 300
