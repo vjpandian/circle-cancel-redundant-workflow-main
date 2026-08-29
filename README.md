@@ -1,9 +1,5 @@
 # circle-cancel-redundant-workflow-main
 
-A simple CircleCI workflow that checks the v2 API to see if a workflow has already run for a `GitHub SHA`. If yes, it cancels the current workflow.
+When a newer run starts on the same branch, this workflow cancels itself.
 
-### CircleCI APIs used
-
-- Get Pipelines for a project - https://circleci.com/docs/api/v2/#operation/listPipelines
-- Get a Pipeline by ID - https://circleci.com/docs/api/v2/#operation/getPipelineById
-- Cancel a Worfklow by ID - https://circleci.com/docs/api/v2/#operation/cancelWorkflow
+Uses the CircleCI CLI (`circleci run list` and `circleci workflow cancel`) in a background loop.
